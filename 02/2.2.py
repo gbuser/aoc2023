@@ -16,6 +16,5 @@ for line in data:
     n +=1
 answer = 0
 for item in games:
-    if item['red'] <= maxRed and item['green'] <= maxGreen and item['blue'] <= maxBlue :
-        answer += item['game']
+    answer += item['red'] * item['blue'] * item['green']
 print(answer)
