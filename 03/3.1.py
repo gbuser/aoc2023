@@ -1,20 +1,21 @@
 import re
 chars = open("input.txt", 'r').read()
-symbols = {char for char in chars if char.isdigit() is False and char != '.' and char != '\n'}
+symbols = {char for char in chars if not any([char.isdigit(), char == '.', char == '\n'])}
 data = chars.split('\n')
 regex = re.compile("\\d+")
 rows, columns = len(data), len(data[0])
-def getNeighbors(row, span):
+
+def getNeighbors(row, span): #find all neigbors in bounds
     neighbors = []
     for n in range(span[0] -1 , span[1] + 1 ):
         neighbors.append((n, row -1))
         neighbors.append((n, row + 1))
     neighbors.append((span[0]-1, row))
     neighbors.append((span[1], row))
-    neighbors = [item for item in neighbors if isInBounds(item)]
+    neighbors = [item for item in neighbors if isInBounds(item)] #remove invalid
     return neighbors
 
-def checkNeighbors(neighbors):
+def neighbors_has_asterisk(neighbors):
     for x, y in neighbors:
         if data[y][x] in symbols:
             return True
@@ -29,4 +30,4 @@ for n in range(rows):
     matches = regex.finditer(data[n])
     for match in matches:
         numbers.append((n, match.span(), int(match[0])))
-print(sum([item[2] for item in numbers if checkNeighbors(getNeighbors(item[0], item[1]))]))
+print(sum([value for row, span, value in numbers if neighbors_has_asterisk(getNeighbors(row, span))]))
