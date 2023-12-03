@@ -26,8 +26,8 @@ def isInBounds(coord):
     return all([x >= 0, x < columns, y >= 0, y< rows])
 
 numbers = []
-for n in range(rows): #get value, row and span of every number
-    matches = regex.finditer(data[n])
+for row in range(rows): #get row, span, value of every number
+    matches = regex.finditer(data[row])
     for match in matches:
-        numbers.append((n, match.span(), int(match[0])))
+        numbers.append((row, match.span(), int(match[0])))
 print(sum([value for row, span, value in numbers if neighbors_has_symbol(getNeighbors(row, span))]))
