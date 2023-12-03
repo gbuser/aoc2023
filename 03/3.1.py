@@ -15,7 +15,7 @@ def getNeighbors(row, span): #find all neigbors in bounds
     neighbors = [item for item in neighbors if isInBounds(item)] #remove invalid
     return neighbors
 
-def neighbors_has_asterisk(neighbors):
+def neighbors_has_symbol(neighbors):
     for x, y in neighbors:
         if data[y][x] in symbols:
             return True
@@ -26,8 +26,8 @@ def isInBounds(coord):
     return all([x >= 0, x < columns, y >= 0, y< rows])
 
 numbers = []
-for n in range(rows):
+for n in range(rows): #get value, row and span of every number
     matches = regex.finditer(data[n])
     for match in matches:
         numbers.append((n, match.span(), int(match[0])))
-print(sum([value for row, span, value in numbers if neighbors_has_asterisk(getNeighbors(row, span))]))
+print(sum([value for row, span, value in numbers if neighbors_has_symbol(getNeighbors(row, span))]))
