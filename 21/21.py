@@ -1,7 +1,7 @@
 file = "data.txt"
 data = open(file, 'r').readlines()
 data = [[char for char in line.strip()]  for line in data]
-possible = set()
+possible_gardens = set() #where you could be after each step
 width, height = len(data[0]), len(data)
 gardens = []
 rocks = []
@@ -15,16 +15,18 @@ for y in range(height):
             case 'S':
                 start = ((x,y))
                 gardens.append(start)
-                possible.add(start)
+                possible_gardens.add(start)
 
 def take_a_step(possible):
+    #returns all valid garden locations after one more step
     garden_neighbors = set()
     for location in possible:
         new_neighbors = find_garden_neighbors(*location)
-        garden_neighbors = garden_neighbors.union(new_neighbors)
+        garden_neighbors |= new_neighbors
     return garden_neighbors
 
 def find_garden_neighbors(x, y):
+    #returns a set of all valid neighbors that are gardens
     candidates = [(x + a, y + b) for a, b in [(0, 1), (0, -1), (1, 0), (-1, 0)]]
     candidates = [pair for pair in candidates if pair[0] > -1 and pair[1] > -1]
     candidates = [pair for pair in candidates if pair[0] < width and pair[1] < height]
@@ -32,6 +34,6 @@ def find_garden_neighbors(x, y):
     return set(garden_neighbors)
 
 for n in range(64):
-    possible = take_a_step(possible)
+    possible_gardens = take_a_step(possible_gardens)
     n += 1
-print(len(possible))
+print(len(possible_gardens))
